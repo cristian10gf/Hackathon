@@ -24,7 +24,7 @@ def main(page: ft.Page):
                     ft.OutlinedButton("log in"),
                     ft.Text("or",size=20),
                     ft.OutlinedButton("sign in")
-                ],
+                ], horizontal_alignment=ft.CrossAxisAlignment.CENTER
             )
         )
     )
