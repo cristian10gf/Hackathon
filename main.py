@@ -7,4 +7,4 @@ def main(page: ft.Page):
 
     print(get_response(input("Ingrese su pregunta: "), "Juan Perez","securepassword123" ))
 
-ft.app(target=main, assets_dir="assets")
+print(get_response(input("Ingrese su pregunta: ")))
