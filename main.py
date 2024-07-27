@@ -1,6 +1,10 @@
-from src.core.db.db import get_all_clients, get_all_projects, get_all_users, get_cliente, get_project, get_user
 from src.core.services.funcionalitys import get_response
+import flet as ft
 
+def main(page: ft.Page):
+    page.horizontal_alignment = ft.CrossAxisAlignment.STRETCH
+    page.title = "Flet Chat"
 
+    print(get_response(input("Ingrese su pregunta: "), "Juan Perez","securepassword123" ))
 
-print(get_response(input("Ingrese su pregunta: ")))
+ft.app(target=main, assets_dir="assets")
