@@ -27,7 +27,7 @@ class GeminiModel:
     
     def generate_text(self, message, modo = 1, adicional = ""):
         prompt = self.generate_prompt(message, modo, adicional)
-        response = self.gemini_model.generate_content([prompt, mapa])
+        response = self.gemini_model.generate_content([prompt])
         lista = response.text.splitlines()
         lista_filtrada = list(filter(None, lista))
         return "\n".join(lista_filtrada)
