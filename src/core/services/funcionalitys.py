@@ -55,7 +55,7 @@ def get_response(message: str, token: str) -> str:
     
     if rol != "gerente" and category == 1:
         return "No tienes permiso para acceder a la información de los clientes."
-    elif rol != "empleado" and category == 3:
+    elif rol == "empleado" and category == 3:
         return "No tienes permiso para acceder a la información de todos los empleados."
     
     return gemini_model.generate_text(message, category)

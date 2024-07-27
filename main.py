@@ -1,3 +1,4 @@
+from src.core.auth.tokens import create_token
 from src.core.services.funcionalitys import get_response
 import flet as ft
 
@@ -16,5 +17,7 @@ def main(page: ft.Page):
             )
         )
     )
+    token = create_token({"username":"Juan Perez","password":"securepassword123"})
+    print(get_response(input("Ingrese su pregunta: "), token))
 
 ft.app(main, assets_dir="assets")
