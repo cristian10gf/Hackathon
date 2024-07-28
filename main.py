@@ -1,9 +1,8 @@
-
 import flet as ft
 
+from src.core.auth.tokens import create_token
+from src.core.services.funcionalitys import get_response
 
-
-import flet as ft
 
 def main(page: ft.Page):
     page.title = "Text theme styles"
