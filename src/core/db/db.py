@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from src.core.db.schemas import Base, Cliente, Proyecto, Usuario, Herramienta
+from datetime import date
 
 # Configuración de la base de datos
 engine = create_engine('sqlite:///info.db')
@@ -81,5 +82,9 @@ def assign_tools_to_project(project_id: int, tool_names: list):
   project.herramientas.extend(tools)
   session.commit()
 
+def assign_time_to_project(project_name: str, time: date):
+  project = session.query(Proyecto).filter(Proyecto.nombre == project_name).first()
+  project.fecha_entrega = time
+  session.commit()
 
 session.close()

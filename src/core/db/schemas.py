@@ -1,4 +1,4 @@
-from sqlalchemy import Table, Column, Integer, String, ForeignKey
+from sqlalchemy import Date, Table, Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -30,22 +30,23 @@ class Usuario(Base):
 
 class Proyecto(Base):
     __tablename__ = 'proyectos'
-    id = Column(Integer, primary_key=True, autoincrement="auto")
+    id = Column(Integer, primary_key=True, autoincrement=True)
     nombre = Column(String, nullable=False)
     descripcion = Column(String, nullable=False)
-    estado = Column(String, nullable=False)
-    usuario_id = Column(Integer, ForeignKey('usuarios.id'))
-    cliente_id = Column(Integer, ForeignKey('clientes.id'))
+    estado = Column(String, nullable=False, default="En Proceso")
+    fecha_entrega = Column(Date, nullable=False, default="2022-12-31")
+    usuario_id = Column(Integer, ForeignKey('usuarios.id'), nullable=True)
+    cliente_id = Column(Integer, ForeignKey('clientes.id'), nullable=True)
 
     usuarios = relationship("Usuario", secondary=usuario_proyecto, back_populates="proyectos")
     cliente = relationship("Cliente", back_populates="proyectos")
     herramientas = relationship("Herramienta", secondary=proyecto_herramienta, back_populates="proyectos")
 
     def __repr__(self):
-        return f"Proyecto(nombre={self.nombre}, estado={self.estado})"
+        return f"Proyecto(nombre={self.nombre}, estado={self.estado}, fecha_entrega={self.fecha_entrega})"
     
     def get_all_info(self):
-        return f"Nombre: {self.nombre}\nDescripción: {self.descripcion}\nEstado: {self.estado}\nUsuario: {self.usuario_id}\nCliente: {self.cliente} Herramientas: {self.herramientas}"
+        return f"Nombre: {self.nombre}\nDescripción: {self.descripcion}\nEstado: {self.estado}\nFecha de Entrega: {self.fecha_entrega}\nUsuario: {self.usuario_id}\nCliente: {self.cliente}\nHerramientas: {self.herramientas}"
 
 class Cliente(Base):
     __tablename__ = 'clientes'

@@ -1,3 +1,9 @@
+import yfinance as yf
+from src.utils.constants import KEYS
+
+sigla = yf.Ticker("GOOG").info
+datos_financieros = {key:sigla[key] for key in KEYS}
+
 empresa = {
     "nombre": "Desarrollos Tech S.A.",
     "mision": "Proveer soluciones innovadoras de software que potencien el éxito de nuestros clientes.",
@@ -26,7 +32,8 @@ empresa = {
         {"nombre": "ISO 9001", "descripcion": "Certificación en Sistemas de Gestión de la Calidad."},
         {"nombre": "Premio Innovación Tecnológica 2022", "descripcion": "Reconocimiento por nuestras soluciones innovadoras en la industria del software."}
     ],
+    "valores financieros": datos_financieros,
+    "Estado Servidores Empresariales": "Funcionando, sin problemas, 100% de disponibilidad, 0% de errores, ",
     "cultura": "En Desarrollos Tech S.A., fomentamos un ambiente de trabajo colaborativo y de apoyo, donde se valora la creatividad y la innovación. Nos comprometemos a ofrecer oportunidades de desarrollo profesional a nuestros empleados y a mantener una cultura inclusiva y diversa. Creemos que un equipo diverso y motivado es clave para la innovación y el éxito sostenido.",
     "impacto_social": "La empresa participa activamente en iniciativas comunitarias y proyectos de responsabilidad social corporativa, incluyendo programas de formación tecnológica para jóvenes y apoyo a organizaciones sin fines de lucro. Estamos comprometidos con la sostenibilidad y trabajamos para reducir nuestro impacto ambiental a través de prácticas empresariales responsables.",
 }
-

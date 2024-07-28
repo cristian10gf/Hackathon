@@ -31,7 +31,7 @@ def login(username: str, password: str) -> str:
   if rol == "Usuario no encontrado":
     return "Usuario no encontrado"
   
-  token = create_token(username, password)
+  token = create_token({"username": username, "password": password})
 
   return token
 
