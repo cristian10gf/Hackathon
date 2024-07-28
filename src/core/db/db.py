@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from src.core.db.schemas import Base, Cliente, Proyecto, Usuario, Herramienta
 from datetime import date
+import random
 
 # Configuración de la base de datos
 engine = create_engine('sqlite:///info.db')
@@ -36,10 +37,10 @@ def add_cliente(name: str, email: str, phone: str, address: str, dedication: str
 def get_project(name: str) -> Proyecto:
   return session.query(Proyecto).filter(Proyecto.nombre == name).first()
 
-def add_project(name: str, description: str, state: str, user_id: int, client_id: int):
+def add_project(name: str, description: str, state: str, user_id: int, client_id: int, feha_entrega: date):
   project = session.query(Proyecto).filter(Proyecto.nombre == name).first()
   if not project:
-    project = Proyecto(nombre=name, descripcion=description, estado=state, usuario_id=user_id, cliente_id=client_id)
+    project = Proyecto(nombre=name, descripcion=description, estado=state, usuario_id=user_id, cliente_id=client_id, fecha_entrega=feha_entrega)
   session.add(project)
   session.commit()
 
@@ -61,7 +62,7 @@ def get_all_users() -> list[Usuario]:
 def get_all_clients() -> list[Cliente]:
   return session.query(Cliente).all()
 
-def get_all_projects() -> list[Proyecto]:
+def get_all_projects() -> list[str]:
   return [project.get_all_info() for project in session.query(Proyecto).all()]
 
 def get_all_tools() -> list[Herramienta]:
@@ -76,8 +77,8 @@ def add_user_project(user_id: int, project_id: int):
   user.proyectos.append(project)
   session.commit()
 
-def assign_tools_to_project(project_id: int, tool_names: list):
-  project = session.query(Proyecto).get(project_id)
+def assign_tools_to_project(project_name: str, tool_names: list):
+  project = session.query(Proyecto).filter(Proyecto.nombre == project_name).first()
   tools = session.query(Herramienta).filter(Herramienta.nombre.in_(tool_names)).all()
   project.herramientas.extend(tools)
   session.commit()

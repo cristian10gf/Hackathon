@@ -36,4 +36,8 @@ empresa = {
     "Estado Servidores Empresariales": "Funcionando, sin problemas, 100% de disponibilidad, 0% de errores, ",
     "cultura": "En Desarrollos Tech S.A., fomentamos un ambiente de trabajo colaborativo y de apoyo, donde se valora la creatividad y la innovación. Nos comprometemos a ofrecer oportunidades de desarrollo profesional a nuestros empleados y a mantener una cultura inclusiva y diversa. Creemos que un equipo diverso y motivado es clave para la innovación y el éxito sostenido.",
     "impacto_social": "La empresa participa activamente en iniciativas comunitarias y proyectos de responsabilidad social corporativa, incluyendo programas de formación tecnológica para jóvenes y apoyo a organizaciones sin fines de lucro. Estamos comprometidos con la sostenibilidad y trabajamos para reducir nuestro impacto ambiental a través de prácticas empresariales responsables.",
+    "tutorales": {
+        "guia": "https://www.desarrollostech.com/guia_induccion",
+        "calendario": "https://calendar.google.com/calendar/u/0/r?id=c_123456789@group.calendar.google.com"
+    }
 }
