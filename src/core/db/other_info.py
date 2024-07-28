@@ -8,8 +8,8 @@ empresa = {
     "nombre": "Desarrollos Tech S.A.",
     "mision": "Proveer soluciones innovadoras de software que potencien el éxito de nuestros clientes.",
     "vision": "Ser la empresa líder en desarrollo de software a nivel global, reconocida por nuestra calidad y compromiso.",
-    "valores": ["Innovación", "Calidad", "Compromiso", "Trabajo en Equipo", "Integridad"],
-    "direccion": "Avenida de la Innovación 123, Ciudad Tech",
+    "valores": ["Innovación", "Calidad", "Compromiso", "Trabajo en Equipo", "Integridad", "variedad"],
+    "direccion": "Área metropolitana de, Kilómetro 5, Vía Puerto Colombia, Barranquilla, Atlántico",
     "telefono": "1234-5678",
     "correo": "contacto@desarrollostech.com",
     "historia": "Fundada en 2010, Desarrollos Tech S.A. comenzó como una pequeña startup enfocada en soluciones de software personalizadas. A lo largo de los años, la empresa ha crecido significativamente, ampliando su cartera de servicios y su base de clientes. Hoy en día, Desarrollos Tech S.A. es reconocida por su capacidad para ofrecer soluciones innovadoras y de alta calidad en diversas industrias. Con una década de experiencia, nos hemos establecido como un socio confiable para empresas que buscan transformar sus operaciones a través de la tecnología.",
@@ -33,11 +33,12 @@ empresa = {
         {"nombre": "Premio Innovación Tecnológica 2022", "descripcion": "Reconocimiento por nuestras soluciones innovadoras en la industria del software."}
     ],
     "valores financieros": datos_financieros,
-    "Estado Servidores Empresariales": "Funcionando, sin problemas, 100% de disponibilidad, 0% de errores, ",
+    "Estado Servidores Empresariales": "Funcionando, sin problemas, 100% de disponibilidad, 0% de errores, 1002 dias sin caidas, 3233 del ultimo mantenimiento, 0 mantenimientos programados",
     "cultura": "En Desarrollos Tech S.A., fomentamos un ambiente de trabajo colaborativo y de apoyo, donde se valora la creatividad y la innovación. Nos comprometemos a ofrecer oportunidades de desarrollo profesional a nuestros empleados y a mantener una cultura inclusiva y diversa. Creemos que un equipo diverso y motivado es clave para la innovación y el éxito sostenido.",
     "impacto_social": "La empresa participa activamente en iniciativas comunitarias y proyectos de responsabilidad social corporativa, incluyendo programas de formación tecnológica para jóvenes y apoyo a organizaciones sin fines de lucro. Estamos comprometidos con la sostenibilidad y trabajamos para reducir nuestro impacto ambiental a través de prácticas empresariales responsables.",
-    "tutorales": {
+    "Horarios y asesoramientio": {
         "guia": "https://www.desarrollostech.com/guia_induccion",
         "calendario": "https://calendar.google.com/calendar/u/0/r?id=c_123456789@group.calendar.google.com"
-    }
+    },
+    "Estrategia Marketing": "Para impulsar el crecimiento y posicionamiento de Desarrollos Tech S.A. se propone una estrategia integral que combina marketing de contenidos, SEO, redes sociales, publicidad online, relaciones públicas y marketing de referencia. El enfoque se centra en crear contenido de valor para el público objetivo, compuesto principalmente por empresas que buscan soluciones de software personalizadas. Se buscará aumentar la visibilidad de la marca, generar leads cualificados y fidelizar a los clientes actuales.",
 }
