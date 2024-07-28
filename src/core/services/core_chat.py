@@ -37,5 +37,3 @@ class GeminiModel:
         return "\n".join(lista_filtrada)
 
 gemini_model = GeminiModel(api_key=API_KEY)
-
-

@@ -50,7 +50,7 @@ def home_view(page: ft.Page):
         ft.Container(
             content=ft.Column(
                 controls=[
-                    ft.Image(src="/images/logo.png", width=300, height=300),
+                    logo,
                     ft.Text("chat gpt", size=30),
                     ft.OutlinedButton(
                         text="log in",
@@ -78,7 +78,6 @@ def home_view(page: ft.Page):
             )
         )
     )
-
 
 def login_view(page: ft.Page):
     page.title = "login"
