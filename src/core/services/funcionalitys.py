@@ -1,8 +1,7 @@
 from src.core.auth.tokens import create_token, verify_token
 from src.core.db.db import get_user
 from src.core.services.core_chat import gemini_model
-
-CATEGORYS = ["informacion", "clientes", "proyectos", "empleados"]
+from src.utils.constants import CATEGORYS
 
 def search_category(message: str) -> int:
     message_keywords = filter(lambda me: len(me) > 6, message.split())

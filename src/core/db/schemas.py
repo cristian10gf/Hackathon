@@ -4,10 +4,16 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
-# Tabla de asociación
+# Tabla de asociación entre usuarios y proyectos
 usuario_proyecto = Table('usuario_proyecto', Base.metadata,
     Column('usuario_id', Integer, ForeignKey('usuarios.id'), primary_key=True),
     Column('proyecto_id', Integer, ForeignKey('proyectos.id'), primary_key=True)
+)
+
+# Tabla de asociación entre proyectos y herramientas
+proyecto_herramienta = Table('proyecto_herramienta', Base.metadata,
+    Column('proyecto_id', Integer, ForeignKey('proyectos.id'), primary_key=True),
+    Column('herramienta_id', Integer, ForeignKey('herramientas.id'), primary_key=True)
 )
 
 class Usuario(Base):
@@ -33,12 +39,13 @@ class Proyecto(Base):
 
     usuarios = relationship("Usuario", secondary=usuario_proyecto, back_populates="proyectos")
     cliente = relationship("Cliente", back_populates="proyectos")
+    herramientas = relationship("Herramienta", secondary=proyecto_herramienta, back_populates="proyectos")
 
     def __repr__(self):
         return f"Proyecto(nombre={self.nombre}, estado={self.estado})"
     
     def get_all_info(self):
-        return f"Nombre: {self.nombre}\nDescripción: {self.descripcion}\nEstado: {self.estado}\nUsuario: {self.usuario_id}\nCliente: {self.cliente_id}"
+        return f"Nombre: {self.nombre}\nDescripción: {self.descripcion}\nEstado: {self.estado}\nUsuario: {self.usuario_id}\nCliente: {self.cliente} Herramientas: {self.herramientas}"
 
 class Cliente(Base):
     __tablename__ = 'clientes'
@@ -56,3 +63,14 @@ class Cliente(Base):
     
     def get_all_info(self):
         return f"Nombre: {self.nombre}\nCorreo: {self.correo}\nTeléfono: {self.telefono}\nDirección: {self.direccion}\nDedicación: {self.dedicacion}"
+
+class Herramienta(Base):
+    __tablename__ = 'herramientas'
+    id = Column(Integer, primary_key=True, autoincrement="auto")
+    nombre = Column(String, nullable=False)
+    tipo = Column(String, nullable=False)  # Ejemplo: Lenguaje de Programación, Framework, Librería
+
+    proyectos = relationship("Proyecto", secondary=proyecto_herramienta, back_populates="herramientas")
+
+    def __repr__(self):
+        return f"Herramienta(nombre={self.nombre}, tipo={self.tipo})"

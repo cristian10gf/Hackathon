@@ -1,15 +1,15 @@
 import jwt
+from src.utils.constants import SECRET_KEY
 
-key = 'Esta es la clave secreta de la app chat bot, de la empresa Desarrollos Tech S.A.'
 
 def create_token(data) -> str:
-    token: str = jwt.encode(data, key, algorithm='HS256')
+    token: str = jwt.encode(data, SECRET_KEY, algorithm='HS256')
     return token
 
 def verify_token(token: str) -> dict:
     data = None
     try: 
-      data = jwt.decode(token, key, algorithms='HS256')
+      data = jwt.decode(token, SECRET_KEY, algorithms='HS256')
     except:
       return None
 
