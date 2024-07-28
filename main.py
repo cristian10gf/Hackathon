@@ -44,14 +44,14 @@ def responder(e: ft.ControlEvent):
 # Vistas
 
 def home_view(page: ft.Page):
-    page.title = "chat"
+    page.title = "home"
     page.clean()
     page.add(
         ft.Container(
             content=ft.Column(
                 controls=[
                     logo,
-                    ft.Text("chat gpt", size=30),
+                    ft.Text("GuiDie", size=30),
                     ft.OutlinedButton(
                         text="log in",
                         on_click=lambda e: page.go("/login"),
