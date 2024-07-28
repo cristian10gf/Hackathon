@@ -50,26 +50,35 @@ def home_view(page: ft.Page):
         ft.Container(
             content=ft.Column(
                 controls=[
-                    logo,
+                    ft.Image(src="/images/logo.png", width=300, height=300),
                     ft.Text("chat gpt", size=30),
                     ft.OutlinedButton(
-                        text="log in", 
+                        text="log in",
                         on_click=lambda e: page.go("/login"),
                         width=200,
-                        height=60, 
+                        height=60,
+                        style=ft.ButtonStyle(
+                            color="#ffffff",
+                            bgcolor="#28a745",
+                        ),
                     ),
                     ft.Text("or", size=20),
                     ft.OutlinedButton(
-                        text="sign in", 
+                        text="sign in",
                         on_click=lambda e: page.go("/sign"),
                         width=200,
                         height=60,
+                        style=ft.ButtonStyle(
+                            color="#ffffff",
+                            bgcolor="#28a745",
+                        ),
                     ),
                 ],
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER
             )
         )
     )
+
 
 def login_view(page: ft.Page):
     page.title = "login"
@@ -91,15 +100,20 @@ def login_view(page: ft.Page):
                             logo,
                             name,
                             password,
-                            ft.ElevatedButton(
-                                text="log in", 
+                             ft.ElevatedButton(
+                                text="log in",
+                                bgcolor="#007bff",
+                                color="#ffffff",
                                 on_click=iniciar_sesion
-                            ),
+                             ),
                             ft.Row([
                                 ft.Text("dont have an account?"),
                                 ft.TextButton(
                                     text="sign in here",
-                                    on_click=lambda e: page.go("/sign")
+                                    on_click=lambda e: page.go("/sign"),
+                                    style=ft.ButtonStyle(
+                                        color="#007bff"
+                                    )
                                 ),
                             ], alignment=ft.MainAxisAlignment.CENTER)
                         ],
@@ -131,13 +145,18 @@ def sign_view(page: ft.Page):
                             name,
                             password,
                             ft.ElevatedButton(
-                                text="sign up", 
+                                text="sign up",
+                                bgcolor="#28a745",
+                                color="#ffffff",
                                 on_click=iniciar_sesion
                             ),
                             ft.Row([
                                 ft.Text("already have an account?"),
                                 ft.TextButton(
                                     text="log in here",
+                                    style=ft.ButtonStyle(
+                                        color="#007bff",
+                                    ),
                                     on_click=lambda e: page.go("/login")
                                 ),
                             ], alignment=ft.MainAxisAlignment.CENTER)
