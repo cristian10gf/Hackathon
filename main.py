@@ -256,7 +256,10 @@ def chat_view(page: ft.Page):
         on_change=handle_change, #por cambiar pa meter mensajes
         controls=[
             ft.Container(height=12),
-            ft.Icon()
+            ft.Icon(ft.icons.ACCOUNT_CIRCLE_ROUNDED),
+            ft.Text("Perfil", size=20, color=ft.colors.WHITE),
+            ft.Divider(thickness=2),
+            ft.Text("Rol: "+rol_user, size=20, color=ft.colors.WHITE),
         ],
         bgcolor="#0e1e36",
     )
@@ -533,6 +536,7 @@ def chat_view(page: ft.Page):
                 bgcolor=ft.colors.TRANSPARENT,
                 # bgcolor=self.get_avatar_color(message.user_name),
             ),
+                
                 ft.Card(
                     content=ft.TextField(
                         value=mensage_content.text,
@@ -553,8 +557,13 @@ def chat_view(page: ft.Page):
                         # expand=True,
                         text_style=ft.TextStyle(font_family="Roboto"),
                         border_radius=10,
-                    )
-                )
+                       
+                    ),
+                    width=300,
+                    # height=,
+                    elevation=5,
+                    expand=True,
+                ),
         ]
             
 
