@@ -4,7 +4,7 @@ from src.core.services.funcionalitys import cargar_chat, get_response, guardar_m
 # Controles comunes
 chats = []
 titlechat = ""
-rol = ""
+rol_user = ""
 
 logo = ft.Image(src="/images/logo.png", width=300, height=300)
 name = ft.TextField(hint_text="name", border="underline", height=60, width=200)
@@ -18,8 +18,9 @@ loadedhistory = False
 
 def iniciar_sesion(e: ft.ControlEvent):
     token, chatsviejos, rol = login(name.value,password.value)
-    global chats
+    global chats, rol_user
     chats = chatsviejos
+    rol_user = rol
 
     if token == "Usuario no encontrado":
         print("Usuario no encontrado")
@@ -255,6 +256,7 @@ def chat_view(page: ft.Page):
         on_change=handle_change, #por cambiar pa meter mensajes
         controls=[
             ft.Container(height=12),
+            ft.Icon()
         ],
         bgcolor="#0e1e36",
     )
