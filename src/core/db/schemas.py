@@ -28,6 +28,9 @@ class Usuario(Base):
 
     def __repr__(self):
         return f"Usuario(nombre={self.nombre}, proyectos={self.proyectos}, rol={self.rol})"
+    
+    def __str__(self):
+        return f"Usuario: {self.nombre}\nRol: {self.rol}, Proyectos: {self.proyectos}"
 
 class Proyecto(Base):
     __tablename__ = 'proyectos'

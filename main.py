@@ -17,7 +17,7 @@ loadedhistory = False
 
 def iniciar_sesion(e: ft.ControlEvent):
     datos = login(name.value,password.value)
-    
+
     if datos == "Usuario no encontrado":
         if error not in e.page.controls:
             e.page.add(error)
@@ -86,7 +86,7 @@ def home_view(page: ft.Page):
             content=ft.Column(
                 controls=[
                     logo,
-                    ft.Text("GuiDie", size=30),
+                    ft.Text("Guidie", size=30),
                     ft.OutlinedButton(
                         text="log in",
                         on_click=lambda e: page.go("/login"),
@@ -268,13 +268,13 @@ def chat_view(page: ft.Page):
         on_change=handle_change, #por cambiar pa meter mensajes
         controls=[
             ft.Container(height=12),
-            ft.Icon(ft.icons.ACCOUNT_CIRCLE_ROUNDED, size=50, color=ft.colors.WHITE),
+            ft.Icon(ft.icons.ACCOUNT_CIRCLE_ROUNDED, size=200, color=ft.colors.WHITE),
+            ft.Container(height=12),
             ft.Divider(thickness=2),
-            ft.Text("Perfil", size=20, color=ft.colors.WHITE),
-            ft.Divider(thickness=2),
-            ft.Text("Rol: "+rol_user, size=20, color=ft.colors.WHITE),
+            ft.Text("Level acces: "+rol_user, size=20, color=ft.colors.WHITE),
             ft.Divider(thickness=2),
             ft.Row([ft.TextButton( text="Cerrar sesión", on_click=cerrar_sesion, style=ft.ButtonStyle(color=ft.colors.WHITE,bgcolor=ft.colors.BLACK)),],alignment=ft.MainAxisAlignment.CENTER),
+            ft.Divider(thickness=2),
         ],
         bgcolor="#0e1e36",
     )

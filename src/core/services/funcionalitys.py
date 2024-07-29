@@ -90,4 +90,6 @@ def get_response(message: str, token: str) -> str:
     elif rol == "empleado" and category == 3:
         return "No tienes permiso para acceder a la información de todos los empleados."
     
-    return gemini_model.generate_text( f"{message}, {get_user(data["username"], data["password"])}",  category)
+    pront = f"{message}, esta es mi informacion personal en la empresa= {get_user(data['username'], data['password'])}"
+    print(pront)
+    return gemini_model.generate_text(pront,  category)
