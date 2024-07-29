@@ -1,10 +1,7 @@
 import flet as ft
-from src.core.services.funcionalitys import cargar_chat, get_response, guardar_mensaje, login
+from src.core.services.funcionalitys import get_response, login
 
 # Controles comunes
-chats = []
-titlechat = ""
-rol = ""
 
 logo = ft.Image(src="/images/logo.png", width=300, height=300)
 name = ft.TextField(hint_text="name", border="underline", height=60, width=200)
@@ -12,47 +9,36 @@ password = ft.TextField(hint_text="password", password=True, border="underline",
 input = ft.TextField(hint_text="message", border="underline", height=60, width=200)
 pr = ft.ProgressRing(width=50, height=50, stroke_width = 2)
 
-
-
-loadedhistory = False
+# Eventos
 
 def iniciar_sesion(e: ft.ControlEvent):
-    token, chatsviejos, rol = login(name.value,password.value)
-    global chats
-    chats = chatsviejos
-
+    token = login(name.value,password.value)
+    
     if token == "Usuario no encontrado":
         print("Usuario no encontrado")
         return
     e.page.client_storage.set("token", token)
 
-    
-
     e.page.go("/chat")
 
-
-
-def responder(e: ft.ControlEvent, texto: str = "") -> str:
+def responder(e: ft.ControlEvent):
     token = e.page.client_storage.get("token")
     e.page.add(pr)
     e.page.update()
 
-    response = get_response(texto, token)
-
-
-    global titlechat, loadedhistory
-
-    if titlechat == "":
-        loadedhistory = False
+    response = get_response(input.value, token)
 
     e.page.remove(pr)
-
-    titlechat = guardar_mensaje(token, texto, response, titlechat)
-
-    if not loadedhistory:
-        chats.append(titlechat)
-
-    return response
+    e.page.add(
+        ft.Container(
+            content=ft.Column(
+                controls=[
+                    ft.Markdown(response),
+                ],
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER
+            )
+        )
+    )
 
 
 # Vistas
@@ -60,6 +46,12 @@ def responder(e: ft.ControlEvent, texto: str = "") -> str:
 def home_view(page: ft.Page):
     page.title = "home"
     page.clean()
+    #set to none to remove the controls in non chat_view pages
+    page.appbar = None
+    page.drawer = None
+    page.end_drawer = None
+    page.bottom_appbar = None
+    ##########################################################
     page.add(
         ft.Container(
             content=ft.Column(
@@ -96,6 +88,12 @@ def home_view(page: ft.Page):
 def login_view(page: ft.Page):
     page.title = "login"
     page.clean()
+    #set to none to remove the controls in non chat_view pages
+    page.appbar = None
+    page.drawer = None
+    page.end_drawer = None
+    page.bottom_appbar = None
+    ##########################################################
     page.add(
         ft.Container(
             content=ft.Stack(
@@ -140,6 +138,12 @@ def login_view(page: ft.Page):
 def sign_view(page: ft.Page):
     page.title = "sign"
     page.clean()
+    #set to none to remove the controls in non chat_view pages
+    page.appbar = None
+    page.drawer = None
+    page.end_drawer = None
+    page.bottom_appbar = None
+    ##########################################################
     page.add(
         ft.Container(
             content=ft.Stack(
@@ -182,90 +186,78 @@ def sign_view(page: ft.Page):
     )
 
 def chat_view(page: ft.Page):
-    
-    global titlechat
-    if titlechat != "":
-        print(cargar_chat(page.client_storage.get("token"), titlechat))
     page.title = "chat"
     page.clean()
-    
-    
-    # eventos drawer #####################################################################################
-    
     #####################################################################################
-
-    def charge_history(e):
-        titulo = chats[drawer.selected_index]
-        super_dic = cargar_chat(page.client_storage.get("token"), titulo)
-        chat_principal.controls.clear()
-        chat_principal.controls.append(ft.Container(height=36, bgcolor=ft.colors.TRANSPARENT))
-        for dic in super_dic:
-            charge_message_user(dic["usuario"])
-            add_message_bot(e,dic["bot"])
-        e.page.close(drawer)
-    
-    
-    
+    # eventos drawer
     def handle_dismissal(e):  # drawer event
-            # page.add(ft.Text("Drawer dismissed"))
-            print("Drawer dismissed")
+        # page.add(ft.Text("Drawer dismissed"))
+        print("Drawer dismissed")
 
     def handle_change(e):  # drawer event
         print(f"Selected Index changed: {drawer.selected_index}")
         # page.close(drawer)
 
-    
-    def load_history(history: list[str]):
-        drawer.controls.clear()
-        global loadedhistory
-        if not loadedhistory:
-            loadedhistory = True
-            history_list = []
-            for conversation in history:
-                history_list.extend([
-                        ft.NavigationDrawerDestination(
-                            label=conversation,
-                            icon=ft.icons.DOOR_BACK_DOOR_OUTLINED,
-                            selected_icon_content=ft.Icon(ft.icons.DOOR_BACK_DOOR),
-                        ),
-                        ft.Divider(thickness=2), 
-                    ]
-                )
-                
-            drawer.controls.extend(history_list)
-            page.show_drawer(drawer)
-            page.update()
-        else:
-            page.show_drawer(drawer)
-            page.update()
+    #####################################################################################
 
+    #####################################################################################
 
     drawer = ft.NavigationDrawer(
-            on_dismiss=handle_dismissal,
-            on_change=charge_history,
-            controls=[
-                ft.Container(height=12),
-                
-            ],
-            bgcolor="#0e1e36",
-        )
-
-    end_draw = ft.NavigationDrawer(
         on_dismiss=handle_dismissal,
-        on_change=handle_change, #por cambiar pa meter mensajes
+        on_change=handle_change,
         controls=[
             ft.Container(height=12),
+            ft.NavigationDrawerDestination(
+                label="Item 1",
+                icon=ft.icons.DOOR_BACK_DOOR_OUTLINED,
+                selected_icon_content=ft.Icon(ft.icons.DOOR_BACK_DOOR),
+            ),
+            ft.Divider(thickness=2),
+            ft.NavigationDrawerDestination(
+                icon_content=ft.Icon(ft.icons.MAIL_OUTLINED),
+                label="Item 2",
+                selected_icon=ft.icons.MAIL,
+            ),
+            ft.NavigationDrawerDestination(
+                icon_content=ft.Icon(ft.icons.PHONE_OUTLINED),
+                label="Item 3",
+                selected_icon=ft.icons.PHONE,
+            ),
         ],
         bgcolor="#0e1e36",
     )
 
+    end_draw = ft.NavigationDrawer(
+        on_dismiss=handle_dismissal,
+        on_change=handle_change,
+        controls=[
+            ft.Container(height=12),
+            ft.NavigationDrawerDestination(
+                label="Item 1",
+                icon=ft.icons.DOOR_BACK_DOOR_OUTLINED,
+                selected_icon_content=ft.Icon(ft.icons.DOOR_BACK_DOOR),
+            ),
+            ft.Divider(thickness=2),
+            ft.NavigationDrawerDestination(
+                icon_content=ft.Icon(ft.icons.MAIL_OUTLINED),
+                label="Item 2",
+                selected_icon=ft.icons.MAIL,
+            ),
+            ft.NavigationDrawerDestination(
+                icon_content=ft.Icon(ft.icons.PHONE_OUTLINED),
+                label="Item 3",
+                selected_icon=ft.icons.PHONE,
+            ),
+        ],
+        bgcolor="#0e1e36",
+    )
 
     barra = ft.AppBar(
         leading=ft.Row(
             controls=[
                 ft.IconButton(
                     icon=ft.icons.HISTORY,
-                    on_click=lambda e: load_history(chats) ,
+                    on_click=lambda e: page.show_drawer(drawer),
                     bgcolor=ft.colors.BLACK,
                     icon_color=ft.colors.WHITE,
                     icon_size=35,
@@ -277,19 +269,7 @@ def chat_view(page: ft.Page):
             ]
         ),
         leading_width=40,
-        title=ft.Row(
-            controls=[
-                ft.Image(
-                    src="/images/robot_logo_peq.png",
-                    width=42,
-                    height=43,
-                    border_radius=10,
-                    fit=ft.ImageFit.CONTAIN,
-                ),
-                ft.Text("Guidie", color=ft.colors.WHITE),
-            ],
-            alignment=ft.MainAxisAlignment.CENTER,
-        ),
+        title=ft.Text("Guidie", color=ft.colors.WHITE),
         toolbar_height=50,
         center_title=True,
         bgcolor=ft.colors.BLACK,
@@ -367,10 +347,11 @@ def chat_view(page: ft.Page):
         controls=[
             ft.CircleAvatar(
                 content=ft.Image(
-                    src="/images/robot_logo_peq.png",
-                    
+                    src="/images/Nao_nao.png",
+                    # width=340,
+                    # height=400,
                     border_radius=10,
-                    fit=ft.ImageFit.FILL,
+                    fit=ft.ImageFit.CONTAIN,
                 ),
                 bgcolor=ft.colors.WHITE,
                 # bgcolor=self.get_avatar_color(message.user_name),
@@ -523,10 +504,11 @@ def chat_view(page: ft.Page):
             self.controls = [
                 ft.CircleAvatar(
                 content=ft.Image(
-                    src="/images/robot_logo_peq.png",
-                    
+                    src="/images/Nao_nao.png",
+                    # width=340,
+                    # height=400,
                     border_radius=10,
-                    fit=ft.ImageFit.FILL,
+                    fit=ft.ImageFit.CONTAIN,
                 ),
                 bgcolor=ft.colors.TRANSPARENT,
                 # bgcolor=self.get_avatar_color(message.user_name),
@@ -551,10 +533,14 @@ def chat_view(page: ft.Page):
                         # expand=True,
                         text_style=ft.TextStyle(font_family="Roboto"),
                         border_radius=10,
-                    )
-                )
-        ]
-            
+                       
+                    ),
+                    width=300,
+                    # height=,
+                    elevation=5,
+                    expand=True,
+                ),
+            ]
 
         
     
@@ -574,42 +560,24 @@ def chat_view(page: ft.Page):
     """
 
     def add_message_user(e):
-
         chat_principal.controls.append(
            
             Mensaje_basico_user(
                 mensage_content=texto_msg(
-                    user_name=name.value,
+                    user_name="Fernando",
                     text=message_bar.value,
                     message_type="user",
                 )
             ),
         ),
-        add_message_bot(e,responder(e, message_bar.value))
-        message_bar.value = ""
-        chat_principal.update()
-        page.update()
 
-    
-    def charge_message_user(texto):
-        chat_principal.controls.append(
-           
-            Mensaje_basico_user(
-                texto_msg(
-                    user_name=name.value,
-                    text=texto,
-                    message_type="user",
-                )
-            ),
-        ),
-        message_bar.value = ""
         chat_principal.update()
 
     def add_message_bot(e, texto):
         chat_principal.controls.append(
            
             Mensaje_basico_bot(
-                texto_msg(
+                mensage_content=texto_msg(
                     user_name="Guidie",
                     text=texto,
                     message_type="bot",
@@ -669,8 +637,8 @@ def chat_view(page: ft.Page):
     chat_principal = ft.ListView(
         controls=[
             ft.Container(height=36, bgcolor=ft.colors.TRANSPARENT),
-           
-            
+            mensaje_basico,
+            mensaje_basico_user,
         ],
         # width=340,
         # height=693,
@@ -695,10 +663,6 @@ def chat_view(page: ft.Page):
                             
                         )
     
-
-
-
-
     pagina0 = ft.Stack(
         left=0,
         animate_position=ft.animation.Animation(500, ft.AnimationCurve.EASE_OUT),
@@ -749,12 +713,99 @@ def chat_view(page: ft.Page):
 
 
 def main(page: ft.Page):
-    page.title = "Home"
-    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
-    page.window.height = 812
-    page.window.width = 375
-    page.bgcolor = "#a5d8ff"
+    page.title = "Hack_demo"
     page.theme_mode = ft.ThemeMode.LIGHT
+    #set to none to remove the controls in non chat_view pages
+    page.appbar = ft.AppBar(
+        leading=ft.Row(
+            controls=[
+                ft.IconButton(
+                    icon=ft.icons.HISTORY,
+                    on_click=lambda e: page.show_drawer(drawer),
+                    bgcolor=ft.colors.BLACK,
+                    icon_color=ft.colors.WHITE,
+                    icon_size=35,
+                    enable_feedback=True,
+                    hover_color=ft.colors.with_opacity(0.1, "#ededed"),
+                    highlight_color=ft.colors.with_opacity(0.1, "#ededed"),
+                    focus_color=ft.colors.with_opacity(0.1, "#ededed"),
+                )
+            ]
+        ),
+        leading_width=40,
+        title=ft.Row(
+            controls=[
+                ft.Image(
+                    src="/images/robot_logo_peq.png",
+                    width=42,
+                    height=43,
+                    border_radius=10,
+                    fit=ft.ImageFit.CONTAIN,
+                ),
+                ft.Text("Guidie", color=ft.colors.WHITE),
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+        ),
+        toolbar_height=50,
+        center_title=True,
+        bgcolor=ft.colors.BLACK,
+        actions=[
+            ft.Row(
+                controls=[
+                    ft.IconButton(
+                        icon=ft.icons.ACCOUNT_CIRCLE_ROUNDED,
+                        on_click=lambda e: page.show_drawer(end_draw),
+                        bgcolor=ft.colors.BLACK,
+                        icon_color=ft.colors.WHITE,
+                        icon_size=35,
+                        # expand=True,
+                        # enable_feedback=True,
+                        hover_color=ft.colors.with_opacity(0.1, "#ededed"),
+                        highlight_color=ft.colors.with_opacity(0.1, "#ededed"),
+                        focus_color=ft.colors.with_opacity(0.1, "#ededed"),
+                    ),
+                ],
+                spacing=0,
+                alignment=ft.MainAxisAlignment.END,
+                wrap=True,
+            ),
+            # boton_flecha,
+        ],
+    )
+    page.drawer = None
+    page.end_drawer = None
+    page.bottom_appbar = None
+    ##########################################################
+    # page.scroll= ft.ScrollMode.AUTO
+    page.theme = ft.Theme(
+        color_scheme_seed=ft.colors.with_opacity(0.5, "#f1edf1"),
+        appbar_theme=ft.AppBarTheme(
+            bgcolor="#f3edf7",
+        ),
+        navigation_bar_theme=ft.NavigationBarTheme(
+            bgcolor="#fffbfe",
+            # bgcolor="#c4dbff",
+            indicator_color=ft.colors.with_opacity(1, "#e8def8"),
+            label_text_style=ft.TextStyle(color=ft.colors.WHITE),
+        ),
+        search_bar_theme=ft.SearchBarTheme(
+            bgcolor="#f3edf7",
+        ),
+        use_material3=True,
+    )  # type: ignore
+
+    # page.window_height = 800
+    page.window.height = 812
+    # page.window_width = 360
+    page.window.width = 375
+
+    page.window.resizable = False
+    page.window.max_height = 812
+    page.window.max_width = 375
+    page.window.center()
+    page.bgcolor = ft.colors.with_opacity(1, "#f1ebe0")
+    page.auto_scroll = True
+
 
     def route_change(e):
         if page.route == "/":

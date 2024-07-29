@@ -1,4 +1,4 @@
-from sqlalchemy import Date, Table, Column, Integer, String, ForeignKey
+from sqlalchemy import Date, DateTime, Table, Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
@@ -24,6 +24,7 @@ class Usuario(Base):
     rol = Column(String, nullable=False)
 
     proyectos = relationship("Proyecto", secondary=usuario_proyecto, back_populates="usuarios")
+    mensajes = relationship("Mensaje", back_populates="usuario")
 
     def __repr__(self):
         return f"Usuario(nombre={self.nombre}, proyectos={self.proyectos}, rol={self.rol})"
@@ -75,3 +76,17 @@ class Herramienta(Base):
 
     def __repr__(self):
         return f"Herramienta(nombre={self.nombre}, tipo={self.tipo})"
+    
+class Mensaje(Base):
+    __tablename__ = 'mensajes'
+    id = Column(Integer, primary_key=True, autoincrement="auto")
+    usuario_id = Column(Integer, ForeignKey('usuarios.id'), nullable=False)
+    name = Column(String, nullable=False)
+    texto = Column(String, nullable=False)
+    fecha = Column(DateTime, nullable=False)
+    response = Column(String, nullable=True)
+
+    usuario = relationship("Usuario", back_populates="mensajes")
+
+    def __repr__(self):
+        return f"Mensaje(usuario={self.usuario}, texto={self.texto}, fecha={self.fecha})"

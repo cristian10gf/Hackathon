@@ -1,5 +1,5 @@
 from src.core.auth.tokens import create_token, verify_token
-from src.core.db.db import get_user
+from src.core.db.db import add_message, get_all_name_messages, get_chat, get_user, Mensaje
 from src.core.services.core_chat import gemini_model
 from src.utils.constants import CATEGORYS
 
@@ -25,6 +25,37 @@ def validate_user(username: str, password: str) -> str:
     return "Usuario no encontrado"
 
 
+def cargar_chat(token: str, name: str) -> list[dict[str, str]]:
+    data = verify_token(token)
+    if not data:
+        return []
+    
+    user = get_user(data["username"], data["password"])
+    mensages = get_chat(user.id, name)
+    sorted(mensages, key=lambda x: x.fecha)
+    return [{"usuario": message.texto, "bot": message.response }  for message in mensages]
+
+def guardar_mensaje(token: str, message: str, response: str, name: str = "") -> str:
+    data = verify_token(token)
+    if not data:
+        return None
+    
+    user = get_user(data["username"], data["password"])
+    titulo = name
+    if name == "":
+        titulo =  gemini_model.generate_text(message, -2)
+    add_message(user.id, message, response, titulo)
+    return titulo
+
+def cargar_name_chats(token: str) -> list[str]:
+    data = verify_token(token)
+    if not data:
+        return []
+    
+    user = get_user(data["username"], data["password"])
+    return get_all_name_messages(user.nombre)
+
+
 def login(username: str, password: str) -> str:
   rol = validate_user(username, password)
 
@@ -33,7 +64,9 @@ def login(username: str, password: str) -> str:
   
   token = create_token({"username": username, "password": password})
 
-  return token
+  chats = cargar_name_chats(token)
+
+  return token, chats, rol
 
 def get_response(message: str, token: str) -> str:
     if not validate_message(message):
@@ -57,4 +90,4 @@ def get_response(message: str, token: str) -> str:
     elif rol == "empleado" and category == 3:
         return "No tienes permiso para acceder a la información de todos los empleados."
     
-    return gemini_model.generate_text(message, category)
+    return gemini_model.generate_text( f"{message}, {get_user(data["username"], data["password"])}",  category)

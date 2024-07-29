@@ -41,4 +41,60 @@ empresa = {
         "calendario": "https://calendar.google.com/calendar/u/0/r?id=c_123456789@group.calendar.google.com"
     },
     "Estrategia Marketing": "Para impulsar el crecimiento y posicionamiento de Desarrollos Tech S.A. se propone una estrategia integral que combina marketing de contenidos, SEO, redes sociales, publicidad online, relaciones públicas y marketing de referencia. El enfoque se centra en crear contenido de valor para el público objetivo, compuesto principalmente por empresas que buscan soluciones de software personalizadas. Se buscará aumentar la visibilidad de la marca, generar leads cualificados y fidelizar a los clientes actuales.",
+    "equipo": {
+      "fundador": {
+        "nombre": "Ana García",
+        "puesto": "CEO",
+        "descripcion": "Ana García es la fundadora y CEO de Desarrollos Tech S.A. Con más de 15 años de experiencia en la industria del software, Ana es una líder visionaria que ha guiado a la empresa hacia el éxito y el crecimiento continuo."
+      },
+    },
+    "logros": {
+      "proyectos_destacados": [
+        {
+          "nombre": "Plataforma de telemedicina",
+          "descripcion": "Solución tecnológica para brindar atención médica a distancia en áreas rurales."
+        },
+        {
+          "nombre": "Sistema de gestión de inventarios",
+          "descripcion": "Aplicación web para optimizar la gestión de inventarios en empresas manufactureras."
+        }
+      ]
+    },
+    "relaciones": {
+      "inversionistas": [
+        {
+          "organizacion": "Universidad de Stanford",
+          "descripcion": "Colaboración en proyectos de investigación."
+        },
+        
+      ]
+    },
+    "cronologia": [
+      {
+        "año": 2015,
+        "evento": "Fundación de la empresa"
+      },
+        {
+            "año": 2017,
+            "evento": "Lanzamiento de la primera aplicación móvil"
+        },
+        {
+            "año": 2019,
+            "evento": "Expansión a nuevos mercados internacionales"
+        },
+        {
+            "año": 2021,
+            "evento": "Certificación ISO 9001"
+        },
+        {
+            "año": 2022,
+            "evento": "Premio a la Innovación Tecnológica"
+        },
+    ],
+    "redes_sociales": {
+      "facebook": "https://www.facebook.com/desarrollostech",
+      "twitter": "https://twitter.com/desarrollostech",
+      "linkedin": "https://www.linkedin.com/company/desarrollostech",
+      "instagram": "https://www.instagram.com/desarrollostech"
+    }
 }

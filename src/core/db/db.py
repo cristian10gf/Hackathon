@@ -1,8 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from src.core.db.schemas import Base, Cliente, Proyecto, Usuario, Herramienta
-from datetime import date
-import random
+from src.core.db.schemas import Base, Cliente, Mensaje, Proyecto, Usuario, Herramienta
+from datetime import date, datetime
 
 # Configuración de la base de datos
 engine = create_engine('sqlite:///info.db')
@@ -56,6 +55,17 @@ def add_tool(name: str, type: str):
   session.commit()
 
 
+def get_chat(user_id: int, name: str) -> list[Mensaje]:
+  user = session.query(Usuario).filter(Usuario.id == user_id).first()
+  return [message for message in user.mensajes if message.name == name]
+
+def add_message(user_id: int, text: str, response: str, name: str=f"nuevo chat - {datetime.today()}"):
+  user = session.query(Usuario).filter(Usuario.id == user_id).first()
+  message = Mensaje(usuario_id=user_id, texto=text, response=response, fecha=datetime.today(), name=name)
+  user.mensajes.append(message)
+  session.commit()
+
+
 def get_all_users() -> list[Usuario]:
   return session.query(Usuario).all()
 
@@ -68,6 +78,9 @@ def get_all_projects() -> list[str]:
 def get_all_tools() -> list[Herramienta]:
   return session.query(Herramienta).all()
 
+def get_all_name_messages(user_name) -> list[str]:
+  user = session.query(Usuario).filter(Usuario.nombre == user_name).first()
+  return [message.name for message in user.mensajes]
 
 # Asignaciones de la base de datos
 

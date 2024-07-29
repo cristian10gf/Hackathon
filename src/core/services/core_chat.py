@@ -24,6 +24,8 @@ class GeminiModel:
           new_prompt = BASE_PROMT + '\n' + f'esta es la pregunta de un empleado: {message}, responde a la pregunta del empleado basado en la informacion de la empresa. {empresa},{get_all_users()}'
         elif modo == 4:
           new_prompt = BASE_PROMT + '\n' + f'esta es la pregunta de un empleado: {message}, responde a la pregunta del empleado basado en la informacion de la empresa. {empresa},{get_all_projects()}'
+        elif modo == -2:
+           new_prompt = f"crea un unico titulo muy corto para este mensaje {message} (solo responde con el primer titulo que tengas)"
         else:
           new_prompt = BASE_PROMT + '\n' + f'esta es la pregunta de un empleado: {message}, responde a la pregunta del empleado basado en la informacion de la empresa. {empresa},{get_all_clients()}, {get_all_projects()},{get_all_users()}, {get_all_tools()}'
         
