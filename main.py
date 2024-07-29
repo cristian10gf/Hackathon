@@ -17,11 +17,11 @@ loadedhistory = False
 
 def iniciar_sesion(e: ft.ControlEvent):
     datos = login(name.value,password.value)
-
+    print(datos)
     if datos == "Usuario no encontrado":
         if error not in e.page.controls:
             e.page.add(error)
-            return
+        return
     
     token, chatsviejos, rol = datos 
     global chats, rol_user
@@ -34,7 +34,6 @@ def iniciar_sesion(e: ft.ControlEvent):
     e.page.client_storage.set("token", token)
 
     
-
     e.page.go("/chat")
 
 def cerrar_sesion(e: ft.ControlEvent):
@@ -271,7 +270,7 @@ def chat_view(page: ft.Page):
             ft.Icon(ft.icons.ACCOUNT_CIRCLE_ROUNDED, size=200, color=ft.colors.WHITE),
             ft.Container(height=12),
             ft.Divider(thickness=2),
-            ft.Text("Level acces: "+rol_user, size=20, color=ft.colors.WHITE),
+            ft.Text("Level access: "+rol_user[0].upper() + rol_user[1:], size=20, color=ft.colors.WHITE),
             ft.Divider(thickness=2),
             ft.Row([ft.TextButton( text="Cerrar sesión", on_click=cerrar_sesion, style=ft.ButtonStyle(color=ft.colors.WHITE,bgcolor=ft.colors.BLACK)),],alignment=ft.MainAxisAlignment.CENTER),
             ft.Divider(thickness=2),
