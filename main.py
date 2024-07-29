@@ -13,7 +13,6 @@ input = ft.TextField(hint_text="message", border="underline", height=60, width=2
 pr = ft.ProgressRing(width=50, height=50, stroke_width = 2)
 
 
-
 loadedhistory = False
 
 def iniciar_sesion(e: ft.ControlEvent):
@@ -31,7 +30,17 @@ def iniciar_sesion(e: ft.ControlEvent):
 
     e.page.go("/chat")
 
+def cerrar_sesion(e: ft.ControlEvent):
+    e.page.client_storage.set("token", "")
 
+    global titlechat, chats, loadedhistory, rol_user
+
+    titlechat = ""
+    chats = []
+    loadedhistory = False
+    rol_user = ""
+
+    e.page.go("/")
 
 def responder(e: ft.ControlEvent, texto: str = "") -> str:
     token = e.page.client_storage.get("token")
@@ -40,17 +49,14 @@ def responder(e: ft.ControlEvent, texto: str = "") -> str:
 
     response = get_response(texto, token)
 
-
-    global titlechat, loadedhistory
-
-    if titlechat == "":
-        loadedhistory = False
-
     e.page.remove(pr)
+
+    global titlechat
+    global loadedhistory
 
     titlechat = guardar_mensaje(token, texto, response, titlechat)
 
-    if not loadedhistory:
+    if titlechat not in chats:
         chats.append(titlechat)
 
     return response
@@ -218,27 +224,23 @@ def chat_view(page: ft.Page):
     
     def load_history(history: list[str]):
         drawer.controls.clear()
-        global loadedhistory
-        if not loadedhistory:
-            loadedhistory = True
-            history_list = []
-            for conversation in history:
-                history_list.extend([
-                        ft.NavigationDrawerDestination(
-                            label=conversation,
-                            icon=ft.icons.DOOR_BACK_DOOR_OUTLINED,
-                            selected_icon_content=ft.Icon(ft.icons.DOOR_BACK_DOOR),
-                        ),
-                        ft.Divider(thickness=2), 
-                    ]
-                )
-                
-            drawer.controls.extend(history_list)
-            page.show_drawer(drawer)
-            page.update()
-        else:
-            page.show_drawer(drawer)
-            page.update()
+    
+        history_list = []
+        for conversation in history:
+            history_list.extend([
+                    ft.NavigationDrawerDestination(
+                        label=conversation,
+                        icon=ft.icons.DOOR_BACK_DOOR_OUTLINED,
+                        selected_icon_content=ft.Icon(ft.icons.DOOR_BACK_DOOR),
+                    ),
+                    ft.Divider(thickness=2), 
+                ]
+            )
+            
+        drawer.controls.extend(history_list)
+        page.show_drawer(drawer)
+        page.update()
+        
 
 
     drawer = ft.NavigationDrawer(
