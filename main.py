@@ -11,12 +11,19 @@ name = ft.TextField(hint_text="name", border="underline", height=60, width=200)
 password = ft.TextField(hint_text="password", password=True, border="underline", can_reveal_password=True, height=60, width=200)
 input = ft.TextField(hint_text="message", border="underline", height=60, width=200)
 pr = ft.ProgressRing(width=50, height=50, stroke_width = 2)
-
+error = ft.Text("Usuario no encontrado")
 
 loadedhistory = False
 
 def iniciar_sesion(e: ft.ControlEvent):
-    token, chatsviejos, rol = login(name.value,password.value)
+    datos = login(name.value,password.value)
+    
+    if datos == "Usuario no encontrado":
+        if error not in e.page.controls:
+            e.page.add(error)
+            return
+    
+    token, chatsviejos, rol = datos 
     global chats, rol_user
     chats = chatsviejos
     rol_user = rol
@@ -40,7 +47,14 @@ def cerrar_sesion(e: ft.ControlEvent):
     loadedhistory = False
     rol_user = ""
 
+    e.page.drawer = None
+    e.page.end_drawer = None
+    e.page.appbar = None
+    e.page.bottom_appbar = None
+
+    e.page.clean()
     e.page.go("/")
+    e.page.update()
 
 def responder(e: ft.ControlEvent, texto: str = "") -> str:
     token = e.page.client_storage.get("token")
@@ -189,10 +203,6 @@ def sign_view(page: ft.Page):
     )
 
 def chat_view(page: ft.Page):
-    
-    global titlechat
-    if titlechat != "":
-        print(cargar_chat(page.client_storage.get("token"), titlechat))
     page.title = "chat"
     page.clean()
     
@@ -258,10 +268,13 @@ def chat_view(page: ft.Page):
         on_change=handle_change, #por cambiar pa meter mensajes
         controls=[
             ft.Container(height=12),
-            ft.Icon(ft.icons.ACCOUNT_CIRCLE_ROUNDED),
+            ft.Icon(ft.icons.ACCOUNT_CIRCLE_ROUNDED, size=50, color=ft.colors.WHITE),
+            ft.Divider(thickness=2),
             ft.Text("Perfil", size=20, color=ft.colors.WHITE),
             ft.Divider(thickness=2),
             ft.Text("Rol: "+rol_user, size=20, color=ft.colors.WHITE),
+            ft.Divider(thickness=2),
+            ft.Row([ft.TextButton( text="Cerrar sesión", on_click=cerrar_sesion, style=ft.ButtonStyle(color=ft.colors.WHITE,bgcolor=ft.colors.BLACK)),],alignment=ft.MainAxisAlignment.CENTER),
         ],
         bgcolor="#0e1e36",
     )
@@ -324,13 +337,6 @@ def chat_view(page: ft.Page):
         ],
     )
 
-    borde = ft.Border(
-        top=ft.BorderSide(1, ft.colors.with_opacity(1, "#d9d9d9")),
-        bottom=ft.BorderSide(1, ft.colors.with_opacity(1, "#d9d9d9")),
-        left=ft.BorderSide(1, ft.colors.with_opacity(1, "#d9d9d9")),
-        right=ft.BorderSide(1, ft.colors.with_opacity(1, "#d9d9d9")),
-    )
-
     def redimensionar_barrabaja(e):
         if len(message_bar.value) < 130:
             barrabaja.height = 80 + 20 * (len(message_bar.value) // 26)
@@ -368,95 +374,6 @@ def chat_view(page: ft.Page):
             self.user_name = user_name
             self.text = text
 
-
-    mensaje_basico = ft.Row(
-        vertical_alignment=ft.CrossAxisAlignment.START,
-        controls=[
-            ft.CircleAvatar(
-                content=ft.Image(
-                    src="/images/robot_logo_peq.png",
-                    
-                    border_radius=10,
-                    fit=ft.ImageFit.FILL,
-                ),
-                bgcolor=ft.colors.WHITE,
-                # bgcolor=self.get_avatar_color(message.user_name),
-            ),
-            ft.Card(
-                    content=ft.TextField(
-                        value="""Guidie: Hola, ¿en qué puedo ayudarte?""",
-                        multiline=True,
-                        # min_lines=1,
-                        # max_lines=8,
-                        read_only=True,
-                        # text_size=33,
-                        filled=True,
-                        text_align=ft.TextAlign.START,
-                        bgcolor=ft.colors.TRANSPARENT,
-                        color=ft.colors.BLACK,
-                        border=ft.InputBorder.NONE,
-                        border_color=ft.colors.TRANSPARENT,
-                        hover_color=ft.colors.TRANSPARENT,
-                        # height=74,
-                        width=200,
-                        # expand=True,
-                        text_style=ft.TextStyle(font_family="Roboto"),
-                        border_radius=10,
-                       
-                    ),
-                    width=300,
-                    # height=,
-                    elevation=5,
-                    expand=True,
-                )
-        ],
-        # border=borde,
-        # border_radius=10,
-        # bgcolor=ft.colors.WHITE,
-        width=270,
-        # height=74,
-    )
-
-    mensaje_basico_user = ft.Row(
-        controls=[
-            ft.Card(
-                    content=ft.TextField(
-                        value="""Fernando: Me gustaría saber si tienes información sobre el clima laboral de la empresa, por favor.""",
-                        multiline=True,
-                        # min_lines=1,
-                        # max_lines=8,
-                        read_only=True,
-                        # text_size=33,
-                        filled=True,
-                        text_align=ft.TextAlign.START,
-                        bgcolor=ft.colors.TRANSPARENT,
-                        color=ft.colors.BLACK,
-                        border=ft.InputBorder.NONE,
-                        border_color=ft.colors.TRANSPARENT,
-                        hover_color=ft.colors.TRANSPARENT,
-                        # height=74,
-                        width=200,
-                        # expand=True,
-                        text_style=ft.TextStyle(font_family="Roboto"),
-                        border_radius=10,
-                       
-                    ),
-                    width=300,
-                    # height=,
-                    elevation=5,
-                    expand=True,
-                ),
-            ft.CircleAvatar(
-                content=ft.Text("F"),
-                color=ft.colors.WHITE,
-                bgcolor=ft.colors.CYAN,
-                # bgcolor=self.get_avatar_color(message.user_name),
-            ),
-        ],
-        vertical_alignment = ft.CrossAxisAlignment.START,
-        width=270,
-        
-    )
     class Mensaje_basico_user(ft.Row):
         def __init__(self, mensage_content: texto_msg):
             super().__init__()
@@ -570,22 +487,6 @@ def chat_view(page: ft.Page):
             
 
         
-    
-
-    """
-    ft.PopupMenuButton(
-                    icon=ft.icons.MORE_VERT,
-                    items=[
-                        ft.PopupMenuItem(text="Item 1"),
-                        ft.PopupMenuItem(),  # divider
-                        ft.PopupMenuItem(
-                            text="Checked item",
-                            checked=False,
-                        ),
-                    ],
-                ),
-    """
-
     def add_message_user(e):
 
         chat_principal.controls.append(
@@ -695,22 +596,16 @@ def chat_view(page: ft.Page):
     )
 
     columna_chat = ft.Column(
-                            controls=[
-                                chat_principal,
-                                ft.Container(height=12, bgcolor=ft.colors.TRANSPARENT),
-                            ],
-                            # expand=True,
-                            width=338,
-                            # height=693,
-                            alignment=ft.MainAxisAlignment.START,
-                            auto_scroll=True,
-                           
-                            
-                        )
-    
-
-
-
+        controls=[
+            chat_principal,
+            ft.Container(height=12, bgcolor=ft.colors.TRANSPARENT),
+        ],
+        # expand=True,
+        width=338,
+        # height=693,
+        alignment=ft.MainAxisAlignment.START,
+        auto_scroll=True,                  
+    )
 
     pagina0 = ft.Stack(
         left=0,
@@ -770,6 +665,7 @@ def main(page: ft.Page):
     page.theme_mode = ft.ThemeMode.LIGHT
 
     def route_change(e):
+        page.controls.clear()
         if page.route == "/":
             home_view(page)
         elif page.route == "/sign":
