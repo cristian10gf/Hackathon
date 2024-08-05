@@ -4,7 +4,7 @@ from src.core.db.schemas import Base, Cliente, Mensaje, Proyecto, Usuario, Herra
 from datetime import date, datetime
 
 # Configuración de la base de datos
-engine = create_engine('sqlite:///info.db')
+engine = create_engine('sqlite:///assets/info.db')
 Base.metadata.create_all(engine)
 
 # Crear una sesión
