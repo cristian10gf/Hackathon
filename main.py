@@ -71,9 +71,6 @@ def responder(e: ft.ControlEvent, texto: str = "") -> str:
 
     return response
 
-
-# Vistas
-
 def sign_view(page: ft.Page):
     page.title = "sign"
     page.clean()
@@ -118,6 +115,7 @@ def sign_view(page: ft.Page):
         )
     )
 
+
 def main(page: ft.Page):
     page.title = "Home"
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
@@ -140,7 +138,7 @@ def main(page: ft.Page):
         elif page.route == "/login":
             login_view(page, iniciar_sesion)
         elif page.route == "/chat":
-            chat_view(page, responder, chats, titlechat, loadedhistory, cerrar_sesion, rol_user)
+            chat_view(page, responder, chats, cerrar_sesion, rol_user)
     
     page.on_route_change = route_change
     page.go(page.route)
