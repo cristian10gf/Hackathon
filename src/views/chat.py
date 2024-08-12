@@ -54,12 +54,12 @@ def chat_view(page: ft.Page, responder: callable, chats, cerrar_sesion: callable
                     text=message_bar.value,
                     message_type="user",
                 )
-            ),
+            )
         ),
         add_message_bot(e,responder(e, message_bar.value))
         message_bar.value = ""
+        
         chat_principal.update()
-        page.update()
     
     def charge_message_user(texto):
         chat_principal.controls.append(
@@ -143,7 +143,7 @@ def chat_view(page: ft.Page, responder: callable, chats, cerrar_sesion: callable
     )
 
     chat_principal = ft.ListView(
-        controls=[ ft.Container(height=36, bgcolor=ft.colors.TRANSPARENT),],
+        controls=[ft.Container(height=36, bgcolor=ft.colors.TRANSPARENT),],
         expand=True,
         spacing=10,
         padding=10,

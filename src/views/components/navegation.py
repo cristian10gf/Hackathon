@@ -10,14 +10,11 @@ def handle_change(e):  # drawer event
 
 def get_drawer( charge_history ) -> ft.NavigationDrawer:
   return ft.NavigationDrawer(
-            on_dismiss=handle_dismissal,
-            on_change=charge_history,
-            controls=[
-                ft.Container(height=12),
-                
-            ],
-            bgcolor="#0e1e36",
-        )
+        on_dismiss=handle_dismissal,
+        on_change=charge_history,
+        controls=[ft.Container(height=12),],
+        bgcolor="#0e1e36",
+    )
 
 
 def get_end_draw(cerrar_sesion, rol_user) -> ft.NavigationDrawer:

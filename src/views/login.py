@@ -1,7 +1,6 @@
 import flet as ft
 from src.views.comuns import logo, name, password
 
-
 def login_view(page: ft.Page, iniciar_sesion: callable):
     page.title = "login"
     page.clean()

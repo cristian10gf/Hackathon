@@ -1,5 +1,5 @@
 from src.core.auth.tokens import create_token, verify_token
-from src.core.db.db import add_message, get_all_name_messages, get_chat, get_user, Mensaje
+from src.core.db.db import add_message, get_all_name_messages, get_chat, get_user
 from src.core.services.core_chat import gemini_model
 from src.utils.constants import CATEGORYS
 
@@ -31,8 +31,8 @@ def cargar_chat(token: str, name: str) -> list[dict[str, str]]:
         return []
     
     user = get_user(data["username"], data["password"])
-    mensages = get_chat(user.id, name)
-    sorted(mensages, key=lambda x: x.fecha)
+    mensages = get_chat(user.id, name).sort(key=lambda x: x.fecha)
+
     return [{"usuario": message.texto, "bot": message.response }  for message in mensages]
 
 def guardar_mensaje(token: str, message: str, response: str, name: str = "") -> str:
@@ -41,9 +41,8 @@ def guardar_mensaje(token: str, message: str, response: str, name: str = "") -> 
         return None
     
     user = get_user(data["username"], data["password"])
-    titulo = name
-    if name == "":
-        titulo =  gemini_model.generate_text(message, -2)
+    titulo = gemini_model.generate_text(message, -2) if name == "" else name
+
     add_message(user.id, message, response, titulo)
     return titulo
 
@@ -56,7 +55,7 @@ def cargar_name_chats(token: str) -> list[str]:
     return get_all_name_messages(user.nombre)
 
 
-def login(username: str, password: str) -> str:
+def login(username: str, password: str) -> str | tuple[str, list[str], str]:
   rol = validate_user(username, password)
 
   if rol == "Usuario no encontrado":
